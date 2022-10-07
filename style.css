@@ -36,10 +36,9 @@ body {
 }
 /* Display styling */
 .display {
+  text-align: right;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-end;
   background-color: black;
   height: 20%;
   width: 100%;
@@ -51,19 +50,27 @@ body {
 }
 /* Display numbers styling */
 .display p {
-  font-family: "digitalSeven";
+  font-family: 'digitalSeven';
   color: white;
   padding-right: 2vh;
 }
-.upper-display {
+/* .upper-display {
+  width: 30ch;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   opacity: 30%;
   padding-top: 1vh;
   font-size: 4vh;
-}
+} */
 .lower-display {
+  width: 11ch;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   opacity: 30%;
-  padding-top: 2vh;
-  font-size: 8vh;
+  padding-top: 3vh;
+  font-size: 10vh;
 }
 /* Calculator buttons styling */
 .buttons {
@@ -75,7 +82,7 @@ body {
 }
 .buttons button {
   box-shadow: inset 0 1.8em rgba(255, 255, 255, 0.1);
-  font-family: "digitalSeven";
+  font-family: 'digitalSeven';
   font-size: 5vh;
   border-radius: 100%;
   border-width: 0.6vh;
@@ -85,9 +92,13 @@ body {
 }
 .buttons button:active {
   transform: scale(0.9);
+  font-size: 4vh;
 }
-.btn-operator {
+.operator {
   background-color: darkorange;
+}
+.red {
+  background-color: firebrick;
 }
 /* Footer styling */
 footer {
