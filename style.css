@@ -1,0 +1,106 @@
+/* Import font from folder */
+@font-face {
+  font-family: digitalSeven;
+  src: url(./fonts/digital-7.regular.ttf);
+}
+/* Reset CSS */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+/* Set background style */
+body {
+  background: -webkit-linear-gradient(360deg, #1c1c1c 10%, #bababa 200%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+/* Set calculator container style */
+.calc-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1vh;
+  background: -webkit-linear-gradient(360deg, saddlebrown 10%, #000000 400%);
+  width: 60vh;
+  height: 80vh;
+  margin: 10vh 0 3vh 0;
+  border-radius: 20px;
+  border-style: outset;
+  border-width: 10px;
+  border-color: gray;
+}
+/* Display styling */
+.display {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  background-color: black;
+  height: 20%;
+  width: 100%;
+  border-radius: 10px;
+  box-sizing: border-box;
+  border-style: inset;
+  border-width: 5px;
+  border-color: rgb(60, 60, 60);
+}
+/* Display numbers styling */
+.display p {
+  font-family: "digitalSeven";
+  color: white;
+  padding-right: 2vh;
+}
+.upper-display {
+  opacity: 30%;
+  padding-top: 1vh;
+  font-size: 4vh;
+}
+.lower-display {
+  opacity: 30%;
+  padding-top: 2vh;
+  font-size: 8vh;
+}
+/* Calculator buttons styling */
+.buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1vh;
+  margin-top: 1vh;
+}
+.buttons button {
+  box-shadow: inset 0 1.8em rgba(255, 255, 255, 0.1);
+  font-family: "digitalSeven";
+  font-size: 5vh;
+  border-radius: 100%;
+  border-width: 0.6vh;
+  width: 12vh;
+  height: 11vh;
+  transition: transform 50ms ease-in-out;
+}
+.buttons button:active {
+  transform: scale(0.9);
+}
+.btn-operator {
+  background-color: darkorange;
+}
+/* Footer styling */
+footer {
+  display: flex;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 2vh;
+  gap: 1.5vh;
+  align-items: center;
+}
+footer a {
+  transition: transform 100ms ease-in-out;
+}
+footer a:hover {
+  opacity: 100%;
+  transform: scale(1.5);
+}
