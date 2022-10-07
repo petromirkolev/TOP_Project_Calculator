@@ -30,8 +30,8 @@ body {
   height: 80vh;
   margin: 10vh 0 3vh 0;
   border-radius: 20px;
-  border-style: outset;
-  border-width: 10px;
+  border-style: ridge;
+  border-width: 10px 10px 30px 15px;
   border-color: gray;
 }
 /* Display styling */
