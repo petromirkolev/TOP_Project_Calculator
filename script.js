@@ -1,5 +1,5 @@
 // Global variables
-const btns = [...document.querySelectorAll('.btn-op')];
+const buttons = [...document.querySelectorAll('.btn')];
 const btnClear = document.querySelector('.clear');
 const btnMemoAdd = document.querySelector('.memo-add');
 const btnMemoRemove = document.querySelector('.memo-remove');
@@ -11,16 +11,15 @@ let firstOperand = '';
 let secondOperand = '';
 let operator = '';
 let memory = '';
+let isCalculatorActive = false;
 let isFirstOperand = true;
-let afterCalc = false;
-let isOperator = false;
 let isSecondOperand = false;
+let isOperator = false;
 let shouldCalculate = false;
-let isEqual = false;
-let counter = 1;
+let afterCalc = false;
 
-const controller = (btnClass, btnText) => {
-  if (isEqual) console.log('asd');
+const operationsController = (btnClass, btnText) => {
+  init();
   if (isFirstOperand) storeFirstOperand(btnClass, btnText);
   if (isOperator) storeOperator(btnClass, btnText);
   if (isSecondOperand) storeSecondOperand(btnClass, btnText);
@@ -29,7 +28,6 @@ const controller = (btnClass, btnText) => {
 
 const storeFirstOperand = (btnClass, btnText) => {
   if (isFirstOperand && btnClass === 'operand') {
-    init();
     lowerDisplay.textContent = firstOperand += btnText;
   } else {
     isFirstOperand = false;
@@ -80,11 +78,30 @@ const afterCalcHelper = (btnClass, btnText) => {
 };
 
 // Numerical buttons handler
-btns.map((btn) => {
+buttons.map((btn) => {
   btn.addEventListener('click', function (e) {
-    const [btnClass, btnText] = [e.target.classList[2], e.target.textContent];
+    const [btnClass, btnText] = [e.target.classList[1], e.target.textContent];
 
-    controller(btnClass, btnText);
+    switch (btnClass) {
+      case 'equal':
+        return console.log('equal');
+      case 'memo-add':
+        memory = firstOperand;
+        return;
+      case 'memo-remove':
+        return console.log('memo-remove');
+
+      // TO DO - make memo restore first operand and proceed to ask for operator
+      case 'memo-restore':
+        return memoRestore();
+      case 'delete':
+        return console.log('delete');
+      case 'clear':
+        return clearCalc();
+      case 'operand':
+      case 'operator':
+        return operationsController(btnClass, btnText);
+    }
   });
 });
 
@@ -102,12 +119,8 @@ const calculate = function (
       return +firstOperand * +secondOperand;
     case '/':
       return +firstOperand / +secondOperand;
-    case '=':
-      alert('cannot calculate');
-      clearCalc();
-      break;
     default:
-      return firstOperand;
+      break;
   }
 };
 
@@ -116,6 +129,7 @@ const calculate = function (
 /////////////
 // Initialize display
 const init = function () {
+  isCalculatorActive = true;
   lowerDisplay.style.opacity = 1;
 };
 // Prevent start with operator
@@ -140,14 +154,22 @@ const clearCalc = function () {
 // Event listeners //
 /////////////////////
 // Clear calculator display and memory
-btnClear.addEventListener('click', clearCalc);
+
 // Memorize current result
-btnMemoAdd.addEventListener('click', () => {
-  memory = display;
-});
+
 // Restore result from memoryy
-btnMemoRes.addEventListener('click', () => {
-  lowerDisplay.textContent = memory;
-});
+
 // Delete last input -----------------TO DO------------------
 btnDelete.addEventListener('click', () => {});
+
+const memoRestore = function () {
+  if (memory.length <= 0) {
+    return;
+  } else {
+    init();
+    firstOperand = memory;
+    lowerDisplay.textContent = firstOperand;
+    isFirstOperand = false;
+    isOperator = true;
+  }
+};
