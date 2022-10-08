@@ -54,23 +54,24 @@ body {
   color: white;
   padding-right: 2vh;
 }
-/* .upper-display {
-  width: 30ch;
+.upper-display {
+  width: 23ch;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   opacity: 30%;
   padding-top: 1vh;
-  font-size: 4vh;
-} */
+  font-size: 5vh;
+}
 .lower-display {
-  width: 11ch;
+  width: 13ch;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  opacity: 30%;
-  padding-top: 3vh;
-  font-size: 10vh;
+  opacity: 0.3;
+  padding-top: 1vh;
+  padding-bottom: 2vh;
+  font-size: 9vh;
 }
 /* Calculator buttons styling */
 .buttons {
@@ -84,10 +85,10 @@ body {
   box-shadow: inset 0 1.8em rgba(255, 255, 255, 0.1);
   font-family: 'digitalSeven';
   font-size: 5vh;
-  border-radius: 100%;
+  border-radius: 30%;
   border-width: 0.6vh;
   width: 12vh;
-  height: 11vh;
+  height: 10.5vh;
   transition: transform 50ms ease-in-out;
 }
 .buttons button:active {
