@@ -7,18 +7,15 @@ const btnMemoRes = document.querySelector('.memo-restore');
 const btnDelete = document.querySelector('.delete');
 const lowerDisplay = document.querySelector('.lower-display');
 const upperDisplay = document.querySelector('.upper-display');
-let display = '';
 let firstOperand = '';
 let secondOperand = '';
 let operator = '';
 let memory = '';
-let result = '';
 let isFirstOperand = true;
 let afterCalc = false;
 let isOperator = false;
 let isSecondOperand = false;
 let shouldCalculate = false;
-let checkNextMove = false;
 let isEqual = false;
 let counter = 1;
 
@@ -40,42 +37,15 @@ const storeFirstOperand = (btnClass, btnText) => {
   }
 };
 const storeOperator = (btnClass, btnText) => {
-  // if (btnClass === 'operator') {
-  //   isOperator;
-  // } else {
-  //   shouldCalculate = false;
-  //   secondOperand = '';
-  //   isSecondOperand = true;
-  // }
-
-  // TO DO - fix - after calculation when we want to store operator again, when operator button is pressed it does not get updated immediately in the calculator, you have to press it twice
-  if (afterCalc) {
-    console.log('operator after calc');
-
-    if (btnClass === 'operator') {
-      console.log('operator after calc 111');
-
-      lowerDisplay.textContent = operator = btnText;
-    }
-    if (btnClass === 'operand' && operator.length > 0) {
-      console.log('operator after calc 222');
-
-      isOperator = false;
-      isSecondOperand = true;
-    }
+  upperDisplay.textContent = firstOperand;
+  if (btnClass === 'operator') {
+    lowerDisplay.textContent = operator = btnText;
   } else {
-    upperDisplay.textContent = firstOperand;
-    if (btnClass === 'operator') {
-      lowerDisplay.textContent = operator = btnText;
-    } else {
-      isOperator = false;
-      isSecondOperand = true;
-    }
+    isOperator = false;
+    isSecondOperand = true;
   }
 };
 const storeSecondOperand = (btnClass, btnText) => {
-  console.log('store second op');
-
   if (afterCalc) {
     if (btnClass === 'operand') {
       lowerDisplay.textContent = secondOperand += btnText;
@@ -94,24 +64,19 @@ const storeSecondOperand = (btnClass, btnText) => {
   }
 };
 const calculateResult = (btnClass, btnText) => {
-  console.log('calc');
-  upperDisplay.textContent =
-    firstOperand =
-    result =
-      calculate(firstOperand, operator, secondOperand);
-
-  afterCalc = true;
+  upperDisplay.textContent = firstOperand = calculate(
+    firstOperand,
+    operator,
+    secondOperand
+  );
+  secondOperand = '';
+  afterCalcHelper(btnClass, btnText);
+};
+const afterCalcHelper = (btnClass, btnText) => {
   shouldCalculate = false;
+  afterCalc = true;
   isOperator = true;
-  secondOperand = operator = '';
-
-  // if (btnClass === 'operator') {
-  //   isOperator;
-  // } else {
-  //   shouldCalculate = false;
-  //   secondOperand = '';
-  //   isSecondOperand = true;
-  // }
+  storeOperator(btnClass, btnText);
 };
 
 // Numerical buttons handler

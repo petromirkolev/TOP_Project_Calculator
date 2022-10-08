@@ -55,23 +55,23 @@ body {
   padding-right: 2vh;
 }
 .upper-display {
-  width: 23ch;
+  width: 28ch;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   opacity: 30%;
   padding-top: 1vh;
-  font-size: 5vh;
+  font-size: 4vh;
 }
 .lower-display {
-  width: 13ch;
+  width: 14ch;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   opacity: 0.3;
   padding-top: 1vh;
   padding-bottom: 2vh;
-  font-size: 9vh;
+  font-size: 8vh;
 }
 /* Calculator buttons styling */
 .buttons {
