@@ -11,13 +11,16 @@ let firstOperand = '';
 let secondOperand = '';
 let operator = '';
 let memory = '';
-let isCalculatorActive = false;
 let isFirstOperand = true;
 let isSecondOperand = false;
 let isOperator = false;
 let shouldCalculate = false;
-let afterCalc = false;
+let nextCalculation = false;
 
+//////////////////////////
+// Calculator functions //
+//////////////////////////
+// Delegate function
 const operationsController = (btnClass, btnText) => {
   init();
   if (isFirstOperand) storeFirstOperand(btnClass, btnText);
@@ -25,7 +28,7 @@ const operationsController = (btnClass, btnText) => {
   if (isSecondOperand) storeSecondOperand(btnClass, btnText);
   if (shouldCalculate) calculateResult(btnClass, btnText);
 };
-
+// Store first number
 const storeFirstOperand = (btnClass, btnText) => {
   if (isFirstOperand && btnClass === 'operand') {
     lowerDisplay.textContent = firstOperand += btnText;
@@ -34,6 +37,7 @@ const storeFirstOperand = (btnClass, btnText) => {
     isOperator = true;
   }
 };
+// Store math operator
 const storeOperator = (btnClass, btnText) => {
   upperDisplay.textContent = firstOperand;
   if (btnClass === 'operator') {
@@ -43,8 +47,9 @@ const storeOperator = (btnClass, btnText) => {
     isSecondOperand = true;
   }
 };
+// Store second number
 const storeSecondOperand = (btnClass, btnText) => {
-  if (afterCalc) {
+  if (nextCalculation) {
     if (btnClass === 'operand') {
       lowerDisplay.textContent = secondOperand += btnText;
     }
@@ -61,6 +66,7 @@ const storeSecondOperand = (btnClass, btnText) => {
     }
   }
 };
+// Calculate result
 const calculateResult = (btnClass, btnText) => {
   upperDisplay.textContent = firstOperand = calculate(
     firstOperand,
@@ -68,43 +74,76 @@ const calculateResult = (btnClass, btnText) => {
     secondOperand
   );
   secondOperand = '';
-  afterCalcHelper(btnClass, btnText);
+  continueCalculation(btnClass, btnText);
 };
-const afterCalcHelper = (btnClass, btnText) => {
+// Continue calculation after result
+const continueCalculation = (btnClass, btnText) => {
   shouldCalculate = false;
-  afterCalc = true;
+  nextCalculation = true;
   isOperator = true;
   storeOperator(btnClass, btnText);
 };
+// Reset calculator
+const resetCalculator = () => {
+  lowerDisplay.style.opacity = 0.3;
+  lowerDisplay.textContent = upperDisplay.textContent = '0';
+  firstOperand = secondOperand = operator = '';
+  isFirstOperand = true;
+  isOperator = isSecondOperand = shouldCalculate = false;
+};
+// Get current result
+const getResult = () => {
+  let result;
+  if (secondOperand.length <= 0 && firstOperand.length !== 0) {
+    lowerDisplay.textContent = firstOperand;
+  } else {
+    result = lowerDisplay.textContent = calculate(
+      firstOperand,
+      operator,
+      secondOperand
+    );
+    return result;
+  }
+};
 
-// Numerical buttons handler
-buttons.map((btn) => {
-  btn.addEventListener('click', function (e) {
-    const [btnClass, btnText] = [e.target.classList[1], e.target.textContent];
-
-    switch (btnClass) {
-      case 'equal':
-        return console.log('equal');
-      case 'memo-add':
-        memory = firstOperand;
-        return;
-      case 'memo-remove':
-        return console.log('memo-remove');
-
-      // TO DO - make memo restore first operand and proceed to ask for operator
-      case 'memo-restore':
-        return memoRestore();
-      case 'delete':
-        return console.log('delete');
-      case 'clear':
-        return clearCalc();
-      case 'operand':
-      case 'operator':
-        return operationsController(btnClass, btnText);
+//////////////////
+// Memory buttons //
+//////////////////
+// Add number to memory
+const memoAdd = () => {
+  memory = lowerDisplay.textContent;
+};
+// TO DO - Fix bug - When memory is restored the user can add more numbers to stored number i.e. should prevent user from adding more numbers but rather use the restored memo number as operand
+// Restore number from memory
+const memoRestore = () => {
+  if (memory.length <= 0) {
+    return;
+  } else {
+    init();
+    if (firstOperand.length === 0) {
+      lowerDisplay.textContent = firstOperand = memory;
+      isFirstOperand = false;
+      isOperator = true;
+    } else {
+      lowerDisplay.textContent = secondOperand = memory;
+      isSecondOperand = false;
+      shouldCalculate = true;
     }
-  });
-});
+  }
+};
+// Remove number from memory
+const memoRemove = () => {
+  memory = '';
+};
 
+//////////////////////
+// Helper functions //
+//////////////////////
+// Initialize display
+const init = function () {
+  lowerDisplay.style.opacity = 1;
+};
+// Calculate result helper function
 const calculate = function (
   firstOperand = 0,
   operator = '',
@@ -124,52 +163,31 @@ const calculate = function (
   }
 };
 
-/////////////
-// Helpers //
-/////////////
-// Initialize display
-const init = function () {
-  isCalculatorActive = true;
-  lowerDisplay.style.opacity = 1;
-};
-// Prevent start with operator
-// const isNotOperator = function (input) {
-//   if (input === 'operator' && firstOperand.length < 1)
-//     return alert('Start with num');
-// };
-// Clear calculator
-const clearCalc = function () {
-  lowerDisplay.style.opacity = 0.3;
-  lowerDisplay.textContent = '0';
-  upperDisplay.textContent = '0';
-  firstOperand = secondOperand = operator = '';
-  isFirstOperand = true;
-  isOperator = false;
-  isSecondOperand = false;
-  shouldCalculate = false;
-  checkNextMove = false;
-};
+////////////////////////////////////////////
+// Current button pressed event delegator //
+////////////////////////////////////////////
+buttons.map((btn) => {
+  btn.addEventListener('click', function (e) {
+    const [btnClass, btnText] = [e.target.classList[1], e.target.textContent];
 
-/////////////////////
-// Event listeners //
-/////////////////////
-// Clear calculator display and memory
+    if (btnClass === 'operator' && firstOperand === '') return;
 
-// Memorize current result
-
-// Restore result from memoryy
-
-// Delete last input -----------------TO DO------------------
-btnDelete.addEventListener('click', () => {});
-
-const memoRestore = function () {
-  if (memory.length <= 0) {
-    return;
-  } else {
-    init();
-    firstOperand = memory;
-    lowerDisplay.textContent = firstOperand;
-    isFirstOperand = false;
-    isOperator = true;
-  }
-};
+    switch (btnClass) {
+      case 'equal':
+        return getResult();
+      case 'memo-add':
+        return memoAdd();
+      case 'memo-remove':
+        return memoRemove();
+      case 'memo-restore':
+        return memoRestore();
+      case 'delete':
+        return console.log('delete');
+      case 'clear':
+        return resetCalculator();
+      case 'operand':
+      case 'operator':
+        return operationsController(btnClass, btnText);
+    }
+  });
+});
