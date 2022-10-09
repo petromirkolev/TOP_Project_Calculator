@@ -110,9 +110,15 @@ footer {
   align-items: center;
 }
 footer a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
   transition: transform 100ms ease-in-out;
 }
 footer a:hover {
   opacity: 100%;
-  transform: scale(1.5);
+  transform: scale(1.1);
+  cursor: pointer;
+}
+footer a:active {
+  transform: scale(1.2);
 }
