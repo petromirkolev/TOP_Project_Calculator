@@ -19,31 +19,11 @@ let firstOperand = '',
   btnClass,
   btnText;
 // === Event listeners === //
-
 // Delegate function based on button clicked
 buttons.map((btn) => {
   btn.addEventListener('click', function (e) {
     [btnClass, btnText] = [e.target.classList[1], e.target.textContent];
-
-    if (btnClass === 'operator' && firstOperand === '') return;
-
-    switch (btnClass) {
-      case 'equal':
-        return firstOperand.length > 0 ? getResult() : resetCalculator();
-      case 'memo-add':
-        return memoAdd();
-      case 'memo-remove':
-        return memoRemove();
-      case 'memo-restore':
-        return memoRestore();
-      case 'delete':
-        return deleteLastInput();
-      case 'clear':
-        return resetCalculator();
-      case 'operand':
-      case 'operator':
-        return operationsController(btnClass, btnText);
-    }
+    buttonListener(btnClass, btnText);
   });
 });
 // Delegate function based on button pressed
@@ -51,15 +31,36 @@ document.addEventListener('keydown', function (e) {
   switch (e.key) {
     case 'Backspace':
       return deleteLastInput();
-    case 'Enter':
-      return getResult();
-    case ''
+
+    // TO DO rest of operations
   }
 });
 
 // === Calculator functions === //
 // == Invoked by button listener == //
-// Button listener based function invoker
+// Button event delegator
+const buttonListener = (btnClass, btnText) => {
+  if (btnClass === 'operator' && firstOperand === '') return;
+
+  switch (btnClass) {
+    case 'equal':
+      return firstOperand.length > 0 ? getResult() : resetCalculator();
+    case 'memo-add':
+      return memoAdd();
+    case 'memo-remove':
+      return memoRemove();
+    case 'memo-restore':
+      return memoRestore();
+    case 'delete':
+      return deleteLastInput();
+    case 'clear':
+      return resetCalculator();
+    case 'operand':
+    case 'operator':
+      return operationsController(btnClass, btnText);
+  }
+};
+// Button event function controller
 const operationsController = (btnClass, btnText) => {
   init();
   if (isFirstOperand) {
@@ -70,7 +71,7 @@ const operationsController = (btnClass, btnText) => {
   if (isSecondOperand) storeSecondOperand(btnClass, btnText);
   if (shouldCalculate) calculateResult(btnClass, btnText);
 };
-// Continue calculation after result
+// Continue calculation after initial result
 const continueCalculation = (btnClass, btnText) => {
   shouldCalculate = false;
   nextCalculation = true;
@@ -99,7 +100,7 @@ const getResult = () => {
     return result;
   }
 };
-// Delete last input TO DO
+// Delete last input
 const deleteLastInput = () => {
   if (isOperator) return;
   if (isFirstOperand)
@@ -116,6 +117,7 @@ const deleteLastInput = () => {
 };
 // Add number to memory
 const memoAdd = () => {
+  if (isOperator) return;
   memory = lowerDisplay.textContent;
 };
 // Restore number from memory

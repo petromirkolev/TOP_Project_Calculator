@@ -6,19 +6,21 @@ A simple calculator based on JavaScript/HTML/CSS
 
 # 🚀Features
 
-- add, subtract, multiply, divide
+- add, subtract, multiply, divide, memorize, delete last input
 
 # 🔨 To-Do
 
-- [ ] Add backspace/undo support
 - [ ] Add keyboard support
-- [ ] Make website responsive
+- [ ] Add decimal button
 - [ ] Refactor code
 
 ### ✔ Done
 
 - [x] Create README
+- [x] Create calculator design and logic
+- [x] Add backspace/undo support
+- [x] Make website responsive
 
 # 📖 Debugging notes
 
-- N/A
+- If "Enter" is pressed when a number is clicked, it adds more (same) numbers to the input
