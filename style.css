@@ -17,6 +17,7 @@ body {
   align-items: center;
   justify-content: center;
 }
+
 /* Set calculator container style */
 .calc-container {
   display: flex;
@@ -36,10 +37,10 @@ body {
 }
 /* Display styling */
 .display {
+  background: -webkit-linear-gradient(360deg, #1c1c1c 10%, #bababa 1000%);
   text-align: right;
   display: flex;
   flex-direction: column;
-  background-color: black;
   height: 20%;
   width: 100%;
   border-radius: 10px;

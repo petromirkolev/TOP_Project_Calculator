@@ -18,8 +18,9 @@ let firstOperand = '',
   nextCalculation = false,
   btnClass,
   btnText;
+// === Event listeners === //
 
-// === Button listener <> Operation delegator === //
+// Delegate function based on button clicked
 buttons.map((btn) => {
   btn.addEventListener('click', function (e) {
     [btnClass, btnText] = [e.target.classList[1], e.target.textContent];
@@ -28,7 +29,7 @@ buttons.map((btn) => {
 
     switch (btnClass) {
       case 'equal':
-        return getResult();
+        return firstOperand.length > 0 ? getResult() : resetCalculator();
       case 'memo-add':
         return memoAdd();
       case 'memo-remove':
@@ -45,13 +46,26 @@ buttons.map((btn) => {
     }
   });
 });
+// Delegate function based on button pressed
+document.addEventListener('keydown', function (e) {
+  switch (e.key) {
+    case 'Backspace':
+      return deleteLastInput();
+    case 'Enter':
+      return getResult();
+    case ''
+  }
+});
 
 // === Calculator functions === //
 // == Invoked by button listener == //
 // Button listener based function invoker
 const operationsController = (btnClass, btnText) => {
   init();
-  if (isFirstOperand) storeFirstOperand(btnClass, btnText);
+  if (isFirstOperand) {
+    if (firstOperand.length <= 0) lowerDisplay.textContent = '';
+    storeFirstOperand(btnClass, btnText);
+  }
   if (isOperator) storeOperator(btnClass, btnText);
   if (isSecondOperand) storeSecondOperand(btnClass, btnText);
   if (shouldCalculate) calculateResult(btnClass, btnText);
@@ -86,7 +100,20 @@ const getResult = () => {
   }
 };
 // Delete last input TO DO
-const deleteLastInput = () => {};
+const deleteLastInput = () => {
+  if (isOperator) return;
+  if (isFirstOperand)
+    firstOperand = lowerDisplay.textContent = lowerDisplay.textContent.slice(
+      0,
+      -1
+    );
+  if (isSecondOperand) {
+    secondOperand = lowerDisplay.textContent = lowerDisplay.textContent.slice(
+      0,
+      -1
+    );
+  }
+};
 // Add number to memory
 const memoAdd = () => {
   memory = lowerDisplay.textContent;
@@ -117,7 +144,7 @@ const memoRemove = () => {
 // Store first number
 const storeFirstOperand = (btnClass, btnText) => {
   if (isFirstOperand && btnClass === 'operand') {
-    lowerDisplay.textContent = firstOperand += btnText;
+    firstOperand = lowerDisplay.textContent += btnText;
   } else {
     isFirstOperand = false;
     isOperator = true;
@@ -134,6 +161,7 @@ const storeOperator = (btnClass, btnText) => {
     if (btnClass === 'operator') {
       lowerDisplay.textContent = operator = btnText;
     } else {
+      lowerDisplay.textContent = '';
       isOperator = false;
       isSecondOperand = true;
     }
@@ -141,21 +169,11 @@ const storeOperator = (btnClass, btnText) => {
 };
 // Store second number
 const storeSecondOperand = (btnClass, btnText) => {
-  if (nextCalculation) {
-    if (btnClass === 'operand') {
-      lowerDisplay.textContent = secondOperand += btnText;
-    }
-    if (btnClass === 'operator' && secondOperand.length > 0) {
-      isSecondOperand = false;
-      shouldCalculate = true;
-    }
+  if (btnClass === 'operand') {
+    secondOperand = lowerDisplay.textContent += btnText;
   } else {
-    if (btnClass === 'operand') {
-      lowerDisplay.textContent = secondOperand += btnText;
-    } else {
-      isSecondOperand = false;
-      shouldCalculate = true;
-    }
+    isSecondOperand = false;
+    shouldCalculate = true;
   }
 };
 // Calculate result
@@ -170,6 +188,10 @@ const calculateResult = (btnClass, btnText) => {
 };
 
 // === Helper functions === //
+// Power on calculator
+const powerOn = () => {
+  lowerDisplay.textContent = upperDisplay.textContent = '0';
+};
 // Initialize display
 const init = () => {
   lowerDisplay.style.opacity = 1;
@@ -184,8 +206,16 @@ const calculate = (firstOperand = 0, operator = '', secondOperand = 0) => {
     case '*':
       return +firstOperand * +secondOperand;
     case '/':
-      return +firstOperand / +secondOperand;
+      if (+secondOperand !== 0) {
+        return +firstOperand / +secondOperand;
+      } else {
+        resetCalculator();
+        init();
+        return (lowerDisplay.textContent = 'Error');
+      }
     default:
-      break;
+      return;
   }
 };
+
+powerOn();
