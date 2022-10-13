@@ -1,10 +1,6 @@
 // === Global variables === //
 const buttons = [...document.querySelectorAll('.btn')],
-  btnClear = document.querySelector('.clear'),
-  btnMemoAdd = document.querySelector('.memo-add'),
-  btnMemoRemove = document.querySelector('.memo-remove'),
-  btnMemoRes = document.querySelector('.memo-restore'),
-  btnDelete = document.querySelector('.delete'),
+  btnEqual = document.querySelector('.equal'),
   lowerDisplay = document.querySelector('.lower-display'),
   upperDisplay = document.querySelector('.upper-display');
 let firstOperand = '',
@@ -15,7 +11,6 @@ let firstOperand = '',
   isSecondOperand = false,
   isOperator = false,
   shouldCalculate = false,
-  nextCalculation = false,
   btnClass,
   btnText;
 // === Event listeners === //
@@ -31,6 +26,11 @@ document.addEventListener('keydown', function (e) {
   switch (e.key) {
     case 'Backspace':
       return deleteLastInput();
+    case 'Enter':
+      btnEqual.focus();
+      return firstOperand.length > 0 ? getResult() : resetCalculator();
+    default:
+      return;
 
     // TO DO rest of operations
   }
@@ -39,7 +39,7 @@ document.addEventListener('keydown', function (e) {
 // === Calculator functions === //
 // == Invoked by button listener == //
 // Button event delegator
-const buttonListener = (btnClass, btnText) => {
+const buttonListener = (btnClass = '', btnText = '') => {
   if (btnClass === 'operator' && firstOperand === '') return;
 
   switch (btnClass) {
@@ -74,7 +74,6 @@ const operationsController = (btnClass, btnText) => {
 // Continue calculation after initial result
 const continueCalculation = (btnClass, btnText) => {
   shouldCalculate = false;
-  nextCalculation = true;
   isOperator = true;
   storeOperator(btnClass, btnText);
 };
